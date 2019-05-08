@@ -11,7 +11,6 @@ from random import getrandbits
 from ipaddress import IPv4Address, IPv6Address
 import collections
 
-
 class Node():
     def __init__(self, ip_address,port,id):
         self.ip = ip_address
@@ -49,7 +48,6 @@ def createPort():
 
     starting_interval = 0
     ending_interval = 65535
-
     port = randint(starting_interval, ending_interval)
     return (port)
 
@@ -63,7 +61,6 @@ def hashing_info(string):#KEY HASHING FUNCTION
     :param input_string: String
     :return: String
     """
-
     nodeInfo = string.encode('utf-8')
 
     #md5 -> 2^7 = 128 bits
@@ -94,8 +91,6 @@ def parseApps(csv_file):
 
     return (appName)
 
-
-
 def main():
     print("Type number of nodes to be created!")
     # N is the number of nodes to be created
@@ -119,25 +114,24 @@ def main():
     # Getting app IDs and saving them into apps list
     apps = [hashing_info(elem) for elem in appNames]
 
-    table_finger = {}
-
     for i in range(N):
         ip_address = createIP(4)
         port = createPort()
 
         # Node's id = (ipaddress,port) pair
         nodeID = hashing_info("{0}:{1}".format(ip_address, port))
-        print("NodeId:",nodeID,"Node ip address:",ip_address, "Node port:",port)
+        print("NodeId:",nodeID,",Node IP address:",ip_address, ",Node port:",port)
 
         # Create Node Object
         node = Node(ip_address, port, nodeID)
         chord_instance[node.id] = [node.ip,node.port]
 
-        # chord_instance.append(node)
         #print(node.node_info())
         print("-------")
-    # chord_instance = collections.OrderedDict(sorted(chord_instance.items()))
-    print(list(chord_instance.keys())[0])
+    chord_instance = collections.OrderedDict(sorted(chord_instance.items()))
+    # print(chord_instance)
+    # print(list(chord_instance.keys())[0])
+    # print(list(chord_instance.items())[0][1][0])
 
         # """
         # #Gather nodes
