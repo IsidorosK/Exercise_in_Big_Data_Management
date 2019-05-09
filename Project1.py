@@ -1,5 +1,5 @@
-''' 1st Exercise in Big Data Management
-    Students : Mitsou Alexandros, Isidoros Koutsoumpos'''
+""" 1st Exercise in Big Data Management
+    Students : Mitsou Alexandros, Isidoros Koutsoumpos"""
 
 import os
 import re
@@ -34,7 +34,8 @@ def createIP(version):
         # str(addr) always returns the short address
         # .exploded is the opposite of this, always returning the full address with all-zero groups and so on
         addr_str = addr.compressed
-    return(addr_str)
+    return addr_str
+
 
 def createPort():
     """
@@ -49,9 +50,11 @@ def createPort():
     starting_interval = 0
     ending_interval = 65535
     port = randint(starting_interval, ending_interval)
-    return (port)
+    return port
+
 
 def hashing_info(string):#KEY HASHING FUNCTION
+
 
     """
     Use MD5 hash to hash a string, convert it to integer and shift right (128 - m) places
@@ -71,7 +74,8 @@ def hashing_info(string):#KEY HASHING FUNCTION
     tmp = int(tmp,16)
 
     result = tmp >> (128-16)
-    return (result)
+    return result
+
 
 def parseApps(csv_file):
     #regular expression to remove emojis from app names
@@ -83,13 +87,18 @@ def parseApps(csv_file):
                            "]+", flags=re.UNICODE)
 
     #read apps from appstore and save it in python list
-    appName = []
+    app_name = []
     df = pd.read_csv(csv_file)
     tmp = df.App.tolist()
 
-    appName = [emoji.sub(r'', elem) for elem in tmp]
+    app_name = [emoji.sub(r'', elem) for elem in tmp]
 
-    return (appName)
+    return app_name
+
+
+def take_finger_table(node):
+    pass
+
 
 def main():
     print("Type number of nodes to be created!")
@@ -107,28 +116,29 @@ def main():
     # print(path_to_csv)
 
     # List containing apps to be hashed and placed at the appropriate nodes
-    appNames = parseApps(path_to_csv)
+    app_names = parseApps(path_to_csv)
     # print(appNames)
     # List containing the hashed app names to IDs
     apps = []
     # Getting app IDs and saving them into apps list
-    apps = [hashing_info(elem) for elem in appNames]
+    apps = [hashing_info(elem) for elem in app_names]
 
     for i in range(N):
         ip_address = createIP(4)
         port = createPort()
 
         # Node's id = (ipaddress,port) pair
-        nodeID = hashing_info("{0}:{1}".format(ip_address, port))
-        print("NodeId:",nodeID,",Node IP address:",ip_address, ",Node port:",port)
+        node_id = hashing_info("{0}:{1}".format(ip_address, port))
+        print("NodeId:",node_id,",Node IP address:",ip_address, ",Node port:",port)
 
         # Create Node Object
-        node = Node(ip_address, port, nodeID)
+        node = Node(ip_address, port, node_id)
         chord_instance[node.id] = [node.ip,node.port]
 
         #print(node.node_info())
         print("-------")
     chord_instance = collections.OrderedDict(sorted(chord_instance.items()))
+
     # print(chord_instance)
     # print(list(chord_instance.keys())[0])
     # print(list(chord_instance.items())[0][1][0])
@@ -139,5 +149,6 @@ def main():
         # #Place Node into Chord Ring at the appropriate position
         # #Create Node's finger table
         # """
+
 
 main()
